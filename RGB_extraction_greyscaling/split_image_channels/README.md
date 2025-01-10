@@ -41,7 +41,7 @@ The RGB Components Viewer is a MATLAB script designed to extract and visualize t
 
 Below is an example output of the application after loading an image:
 
-[Output](channel_output.jpg)
+![](https://github.com/user-attachments/assets/bf2ed3b0-ae39-4f01-81dc-c6efc6cc7e2b)
 
 - The Original Image is displayed in the first subplot.
 - The Red Component is displayed in the second subplot.
