@@ -23,13 +23,26 @@ The Greyscale Methods Viewer is a MATLAB script designed to convert an image int
 - Interactive Visualization: Displays the original image along with its greyscaled versions using four different methods in a 2x2 subplot layout.
 - Greyscale Algorithms: Implements and displays the following greyscale methods:
 
-    - Average Method
+    - Average Method :
 
-    - Weighted Average Method
+      ![](https://github.com/user-attachments/assets/877017b9-46f1-4c5f-ba78-a7e90396a7d9)
 
-    - Luminosity Method
 
-    - Desaturation Method
+
+    - Weighted Average Method :
+
+      ![](https://github.com/user-attachments/assets/23513d5f-1234-4683-94ea-d3fa953e75c6)
+
+
+    - Luminosity Method :
+
+      ![](https://github.com/user-attachments/assets/a7a2d198-60b8-404f-92c7-4dbb29551dbb)
+
+
+    - Desaturation Method :
+
+      ![](https://github.com/user-attachments/assets/da813fe2-d44f-4c9e-847b-c3dfaa4148f9)
+
 
 
 
@@ -48,6 +61,9 @@ The Greyscale Methods Viewer is a MATLAB script designed to convert an image int
 ## Example Output
 
 Below is an example output of the application after loading an image:
+
+![](https://github.com/user-attachments/assets/e9d3d33e-ab5d-4be4-9ca6-b7f7335c7142)
+
 
 - The Average Method greyscaled image is displayed in the first subplot.
 - The Weighted Average Method greyscaled image is displayed in the second subplot.
