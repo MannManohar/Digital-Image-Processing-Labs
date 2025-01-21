@@ -1,4 +1,5 @@
-% Clear workspace, command window, and close all figures for a fresh start
+% Histogram equalization using histeq function
+% Author - Mann Manohar
 clc
 clear all
 close all
