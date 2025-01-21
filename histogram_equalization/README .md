@@ -42,7 +42,7 @@ The Histogram Equalization Viewer is a MATLAB script designed to perform histogr
 
 Below is an example output of the application after loading an image:
 
-![](histogram_01-1.png)
+![](https://github.com/MannManohar/Digital-Image-Processing-Labs/blob/main/histogram_equalization/html/histogram_01.png?raw=true)
 
 - The original grayscale image is displayed in the first subplot.
 
