@@ -1,0 +1,191 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Shannon_Fano_Coding</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2025-02-18"><meta name="DC.source" content="Shannon_Fano_Coding.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">% Shannon-Fano Coding</span>
+<span class="comment">% Author : Mann Manohar</span>
+
+<span class="comment">% Shannon-Fano Coding Script</span>
+<span class="comment">% This script implements the Shannon-Fano coding algorithm,</span>
+<span class="comment">% which is used for lossless data compression.</span>
+
+<span class="comment">% Define symbols and their probabilities</span>
+symbols = {<span class="string">'A'</span>, <span class="string">'B'</span>, <span class="string">'C'</span>, <span class="string">'D'</span>, <span class="string">'E'</span>, <span class="string">'F'</span>};  <span class="comment">% Symbols to encode</span>
+probabilities = [0.4, 0.2, 0.2, 0.1, 0.1, 0.1];  <span class="comment">% Corresponding probabilities</span>
+
+<span class="comment">% Sort symbols based on probabilities in descending order</span>
+[probabilities, sortIdx] = sort(probabilities, <span class="string">'descend'</span>); <span class="comment">% Sort probabilities and get sorting indices</span>
+symbols = symbols(sortIdx); <span class="comment">% Rearrange symbols accordingly</span>
+
+<span class="comment">% Generate Shannon-Fano codes</span>
+codes = shannon_fano_recursive(probabilities, symbols, <span class="string">''</span>);
+
+<span class="comment">% Display results</span>
+fprintf(<span class="string">'Symbol   Probability   Code\n'</span>);
+<span class="keyword">for</span> i = 1:length(symbols)
+    fprintf(<span class="string">'%s        %.2f          %s\n'</span>, symbols{i}, probabilities(i), codes{i});
+<span class="keyword">end</span>
+
+<span class="comment">% Recursive function to generate Shannon-Fano codes</span>
+<span class="keyword">function</span> codes = shannon_fano_recursive(probabilities, symbols, prefix)
+    codes = cell(size(symbols)); <span class="comment">% Initialize an empty cell array to store codes</span>
+
+    <span class="comment">% Base case: if only one symbol left, assign the accumulated prefix as its code</span>
+    <span class="keyword">if</span> length(symbols) == 1
+        codes{1} = prefix;
+        <span class="keyword">return</span>;
+    <span class="keyword">end</span>
+
+    <span class="comment">% Find partition index where the probabilities are nearly equal when split</span>
+    total = sum(probabilities); <span class="comment">% Total sum of probabilities</span>
+    sum1 = 0; <span class="comment">% Initialize sum for the first partition</span>
+    <span class="keyword">for</span> splitIdx = 1:length(probabilities)
+        sum1 = sum1 + probabilities(splitIdx);
+        sum2 = total - sum1; <span class="comment">% Remaining sum for second partition</span>
+
+        <span class="comment">% Stop when the difference between two partitions is minimized</span>
+        <span class="keyword">if</span> abs(sum1 - sum2) &lt; abs((sum1 - probabilities(splitIdx)) - (sum2 + probabilities(splitIdx)))
+            <span class="keyword">break</span>;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="comment">% Recursively compute codes for partitions</span>
+    leftCodes = shannon_fano_recursive(probabilities(1:splitIdx), symbols(1:splitIdx), [prefix <span class="string">'0'</span>]); <span class="comment">% Assign '0' to first partition</span>
+    rightCodes = shannon_fano_recursive(probabilities(splitIdx+1:end), symbols(splitIdx+1:end), [prefix <span class="string">'1'</span>]); <span class="comment">% Assign '1' to second partition</span>
+
+    <span class="comment">% Combine the results into the codes array</span>
+    codes(1:splitIdx) = leftCodes;
+    codes(splitIdx+1:end) = rightCodes;
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Symbol   Probability   Code
+A        0.40          0
+B        0.20          10
+C        0.20          110
+D        0.10          1110
+E        0.10          11110
+F        0.10          11111
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% Shannon-Fano Coding 
+% Author : Mann Manohar
+
+% Shannon-Fano Coding Script
+% This script implements the Shannon-Fano coding algorithm, 
+% which is used for lossless data compression.
+
+% Define symbols and their probabilities
+symbols = {'A', 'B', 'C', 'D', 'E', 'F'};  % Symbols to encode
+probabilities = [0.4, 0.2, 0.2, 0.1, 0.1, 0.1];  % Corresponding probabilities
+
+% Sort symbols based on probabilities in descending order
+[probabilities, sortIdx] = sort(probabilities, 'descend'); % Sort probabilities and get sorting indices
+symbols = symbols(sortIdx); % Rearrange symbols accordingly
+
+% Generate Shannon-Fano codes
+codes = shannon_fano_recursive(probabilities, symbols, '');
+
+% Display results
+fprintf('Symbol   Probability   Code\n');
+for i = 1:length(symbols)
+    fprintf('%s        %.2f          %s\n', symbols{i}, probabilities(i), codes{i});
+end
+
+% Recursive function to generate Shannon-Fano codes
+function codes = shannon_fano_recursive(probabilities, symbols, prefix)
+    codes = cell(size(symbols)); % Initialize an empty cell array to store codes
+
+    % Base case: if only one symbol left, assign the accumulated prefix as its code
+    if length(symbols) == 1
+        codes{1} = prefix;
+        return;
+    end
+
+    % Find partition index where the probabilities are nearly equal when split
+    total = sum(probabilities); % Total sum of probabilities
+    sum1 = 0; % Initialize sum for the first partition
+    for splitIdx = 1:length(probabilities)
+        sum1 = sum1 + probabilities(splitIdx);
+        sum2 = total - sum1; % Remaining sum for second partition
+        
+        % Stop when the difference between two partitions is minimized
+        if abs(sum1 - sum2) < abs((sum1 - probabilities(splitIdx)) - (sum2 + probabilities(splitIdx)))
+            break;
+        end
+    end
+
+    % Recursively compute codes for partitions
+    leftCodes = shannon_fano_recursive(probabilities(1:splitIdx), symbols(1:splitIdx), [prefix '0']); % Assign '0' to first partition
+    rightCodes = shannon_fano_recursive(probabilities(splitIdx+1:end), symbols(splitIdx+1:end), [prefix '1']); % Assign '1' to second partition
+
+    % Combine the results into the codes array
+    codes(1:splitIdx) = leftCodes;
+    codes(splitIdx+1:end) = rightCodes;
+end
+
+##### SOURCE END #####
+--></body></html>
